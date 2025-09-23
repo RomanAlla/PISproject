@@ -6,7 +6,7 @@ import '../models/weighted_point_model.dart';
 class PointParser {
   Set<String> validColors = {"red", "green", "blue"};
 
-  ColoredPoint? parseUpdatedPoint(String line) {
+  ColoredPoint? parsePointFromString(String line) {
     final parts = line.trim().split(RegExp(r'\s+'));
 
     final cleanedParts = parts.where((part) => part.isNotEmpty).toList();
@@ -101,7 +101,7 @@ class PointParser {
     final lines = inputData.split('\n');
     return lines
         .where((line) => line.trim().isNotEmpty)
-        .map(parseUpdatedPoint)
+        .map(parsePointFromString)
         .whereType<ColoredPoint>()
         .toList();
   }

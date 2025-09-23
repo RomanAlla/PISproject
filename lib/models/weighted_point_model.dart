@@ -1,6 +1,6 @@
 import 'point_model.dart';
 
-class WeightedPoint extends Point {
+class WeightedPoint extends ColoredPoint {
   WeightedPoint({
     required super.x,
     required super.y,
@@ -11,6 +11,6 @@ class WeightedPoint extends Point {
 
   @override
   String toString() {
-    return 'Point(x:$x, y:$y, color:"$color", weight:$weight)';
+    return 'WeightedPoint(x:$x, y:$y, color:"$color", weight:$weight)';
   }
 }

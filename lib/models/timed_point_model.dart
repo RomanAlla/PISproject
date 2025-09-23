@@ -1,6 +1,6 @@
 import 'point_model.dart';
 
-class TimedPoint extends Point {
+class TimedPoint extends ColoredPoint {
   TimedPoint({
     required super.x,
     required super.y,
@@ -11,6 +11,6 @@ class TimedPoint extends Point {
 
   @override
   String toString() {
-    return 'Point(x:$x, y:$y, color:"$color", timestamp:$timestamp)';
+    return 'TimedPoint(x:$x, y:$y, color:"$color", timestamp:$timestamp)';
   }
 }

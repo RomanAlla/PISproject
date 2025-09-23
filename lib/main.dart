@@ -12,7 +12,7 @@ void main() {
     final points = lines
         .where((line) => line.trim().isNotEmpty)
         .map(PointParser().parsePointFromString)
-        .whereType<Point>()
+        .whereType<ColoredPoint>()
         .toList();
 
     OutputPrinter.printPointsInfo(points);

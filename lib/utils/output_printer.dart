@@ -3,7 +3,7 @@ import '../models/timed_point_model.dart';
 import '../models/weighted_point_model.dart';
 
 class OutputPrinter {
-  static void printPointsInfo(List<Point> points) {
+  static void printPointsInfo(List<ColoredPoint> points) {
     if (points.isEmpty) {
       print('Нет валидных точек для обработки');
       return;
@@ -16,7 +16,7 @@ class OutputPrinter {
     print('===========================');
   }
 
-  static void printClosestPointInfo(Point? closestPoint) {
+  static void printClosestPointInfo(ColoredPoint? closestPoint) {
     if (closestPoint == null) {
       print('Не удалось найти ближайшую точку');
       return;

@@ -1,14 +1,14 @@
 import '../models/point_model.dart';
 
 class DistanceCalculator {
-  static double calculateDistance(Point point) {
+  static double calculateDistance(ColoredPoint point) {
     return point.x * point.x + point.y * point.y;
   }
 
-  static Point? findClosestToOrigin(List<Point> points) {
+  static ColoredPoint? findClosestToOrigin(List<ColoredPoint> points) {
     if (points.isEmpty) return null;
 
-    Point closestPoint = points.first;
+    ColoredPoint closestPoint = points.first;
     double minDistance = DistanceCalculator.calculateDistance(points.first);
 
     for (final point in points.skip(1)) {
