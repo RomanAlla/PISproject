@@ -1,4 +1,3 @@
-import '../models/lined_point.dart';
 import '../models/point_model.dart';
 import '../models/timed_point_model.dart';
 import '../models/weighted_point_model.dart';
@@ -36,8 +35,6 @@ class OutputPrinter {
       print('  Вес: ${closestPoint.weight}');
     } else if (closestPoint is TimedPoint) {
       print('  Время: ${closestPoint.timestamp}');
-    } else if (closestPoint is LinedPoint) {
-      print('  Z: ${closestPoint.z}');
     }
   }
 }
