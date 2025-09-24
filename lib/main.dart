@@ -1,4 +1,3 @@
-import 'models/point_model.dart';
 import 'services/file_proccesor.dart';
 import 'services/point_parser.dart';
 import 'utils/distance_calculator.dart';
@@ -10,11 +9,8 @@ const String dataPath = 'input_data.txt';
 void main() {
   try {
     final lines = FileProccesor.readDataFromFile(dataPath);
-    final points = lines
-        .where((line) => line.trim().isNotEmpty)
-        .map(PointParser().parsePointFromString)
-        .whereType<ColoredPoint>()
-        .toList();
+    final fileContent = lines.join('\n');
+    final points = PointParser().parsePointsFromString(fileContent);
 
     OutputPrinter.printPointsInfo(points);
     OutputPrinter.printClosestPointInfo(
