@@ -1,4 +1,3 @@
-import 'package:PISprojects/models/lined_point.dart';
 import 'package:PISprojects/models/point_model.dart';
 import 'package:PISprojects/models/timed_point_model.dart';
 import 'package:PISprojects/models/weighted_point_model.dart';
@@ -49,19 +48,6 @@ class PointParser {
     switch (type) {
       case 'colored_point':
         return ColoredPoint(x: x, y: y, color: color);
-
-      case 'lined_point':
-        if (cleanedParts.length < startIndex + 4) {
-          throw ParseException(
-            'LinedPoint требует 4 параметра в строке: $line',
-          );
-        }
-        final zStr = cleanedParts[startIndex + 3];
-        if (!Validator.isValidCoordinate(zStr)) {
-          throw ParseException('Некорректная координата z в строке: $line');
-        }
-        final z = double.parse(zStr);
-        return LinedPoint(x: x, y: y, z: z, color: color);
 
       case 'timed_point':
         if (cleanedParts.length < startIndex + 5) {
