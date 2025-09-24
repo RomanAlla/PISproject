@@ -1,4 +1,3 @@
-import 'package:PISprojects/models/lined_point.dart';
 import 'package:PISprojects/models/point_model.dart';
 import 'package:PISprojects/models/timed_point_model.dart';
 import 'package:PISprojects/models/weighted_point_model.dart'
