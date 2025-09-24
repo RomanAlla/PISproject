@@ -4,4 +4,4 @@ timed_point 5.0 6.0 blue 2023-01-01 12:00:00
 colored_point 0.5 0.5 red
 colored_point 2.0 3.0 invalid_color
 invalid_data
-lined_point 12.45 12.66 34.56 red
+line 4.2 3.2
