@@ -1,6 +1,8 @@
+import '../models/lined_point.dart';
 import '../models/point_model.dart';
 import '../models/timed_point_model.dart';
 import '../models/weighted_point_model.dart';
+import 'distance_calculator.dart';
 
 class OutputPrinter {
   static void printPointsInfo(List<ColoredPoint> points) {
@@ -26,11 +28,16 @@ class OutputPrinter {
     print('  Координаты: (${closestPoint.x}, ${closestPoint.y})');
     print('  Цвет: ${closestPoint.color}');
     print('  Тип: ${closestPoint.runtimeType}');
+    print(
+      '  Расстояние: ${DistanceCalculator.calculateDistance(closestPoint).toStringAsFixed(2)}',
+    );
 
     if (closestPoint is WeightedPoint) {
       print('  Вес: ${closestPoint.weight}');
     } else if (closestPoint is TimedPoint) {
       print('  Время: ${closestPoint.timestamp}');
+    } else if (closestPoint is LinedPoint) {
+      print('  Z: ${closestPoint.z}');
     }
   }
 }

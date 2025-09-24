@@ -1,108 +1,111 @@
-import '../models/lined_point.dart';
-import '../models/point_model.dart';
-import '../models/timed_point_model.dart';
-import '../models/weighted_point_model.dart';
+import 'package:PISprojects/models/lined_point.dart';
+import 'package:PISprojects/models/point_model.dart';
+import 'package:PISprojects/models/timed_point_model.dart';
+import 'package:PISprojects/models/weighted_point_model.dart';
+import 'package:PISprojects/utils/exceptions.dart';
+import 'package:PISprojects/utils/validator.dart';
 
 class PointParser {
   Set<String> validColors = {"red", "green", "blue"};
 
   ColoredPoint? parsePointFromString(String line) {
     final parts = line.trim().split(RegExp(r'\s+'));
-
     final cleanedParts = parts.where((part) => part.isNotEmpty).toList();
 
-    if (cleanedParts.length < 4) {
-      print('Ошибка: строка "$line" должна содержать минимум 4 свойства');
-      return null;
+    if (cleanedParts.length < 3) {
+      throw ParseException(
+        'Строка "$line" должна содержать минимум 3 свойства (x, y, color)',
+      );
     }
 
-    final type = cleanedParts[0].toLowerCase();
-    final x = double.tryParse(cleanedParts[1]);
-    final y = double.tryParse(cleanedParts[2]);
+    String type = 'colored_point';
+    int startIndex = 0;
 
-    if (x == null || y == null) {
-      print('Ошибка: некорректные координаты в строке: $line');
-      return null;
+    if (double.tryParse(cleanedParts[0]) == null &&
+        !Validator.isValidColor(cleanedParts[0])) {
+      type = cleanedParts[0].toLowerCase();
+      startIndex = 1;
+    }
+
+    if (cleanedParts.length < startIndex + 3) {
+      throw ParseException('Недостаточно параметров в строке: $line');
+    }
+
+    final xStr = cleanedParts[startIndex];
+    final yStr = cleanedParts[startIndex + 1];
+
+    if (!Validator.isValidCoordinate(xStr) ||
+        !Validator.isValidCoordinate(yStr)) {
+      throw ParseException('Некорректные координаты в строке: $line');
+    }
+    final x = double.parse(xStr);
+    final y = double.parse(yStr);
+
+    final color = cleanedParts[startIndex + 2].toLowerCase();
+    if (!Validator.isValidColor(color)) {
+      throw ParseException('Некорректный цвет "$color" в строке: $line');
     }
 
     switch (type) {
       case 'colored_point':
-        if (cleanedParts.length < 4) {
-          print('Ошибка: colored_point требует 4 параметра');
-          return null;
-        }
-        final color = cleanedParts[3].toLowerCase();
-        if (!validColors.contains(color)) {
-          print('Ошибка: некорректный цвет "$color" в строке: $line');
-          return null;
-        }
         return ColoredPoint(x: x, y: y, color: color);
 
       case 'lined_point':
-        if (cleanedParts.length == 4) {
-          print('Ошибка: lined_point требует 4 параметров');
-          return null;
+        if (cleanedParts.length < startIndex + 4) {
+          throw ParseException(
+            'LinedPoint требует 4 параметра в строке: $line',
+          );
         }
-        final z = double.tryParse(cleanedParts[3]);
-        final color = cleanedParts[4].toLowerCase();
-        if (z == null) {
-          print('Ошибка: некорректная координата z в строке: $line');
-          return null;
+        final zStr = cleanedParts[startIndex + 3];
+        if (!Validator.isValidCoordinate(zStr)) {
+          throw ParseException('Некорректная координата z в строке: $line');
         }
-        if (!validColors.contains(color)) {
-          print('Ошибка: некорректный цвет "$color" в строке: $line');
-          return null;
-        }
+        final z = double.parse(zStr);
         return LinedPoint(x: x, y: y, z: z, color: color);
 
       case 'timed_point':
-        if (cleanedParts.length != 6) {
-          print('Ошибка: timed_point требует 6 параметров');
-          return null;
+        if (cleanedParts.length < startIndex + 5) {
+          throw ParseException(
+            'TimedPoint требует 5 параметров в строке: $line',
+          );
         }
-        final timestamp = cleanedParts[4] + ' ' + cleanedParts[5];
-        final color = cleanedParts[3].toLowerCase();
-        try {
-          final time = DateTime.parse(timestamp);
-          if (!validColors.contains(color)) {
-            print('Ошибка: некорректный цвет "$color" в строке: $line');
-            return null;
-          }
-          return TimedPoint(x: x, y: y, color: color, timestamp: time);
-        } catch (e) {
-          print('Ошибка парсинга даты: $timestamp в строке: $line');
-          return null;
-        }
+        final dateStr = cleanedParts[startIndex + 3];
+        final timeStr = cleanedParts[startIndex + 4];
+        final timestamp = DateTime.parse('$dateStr $timeStr');
+        return TimedPoint(x: x, y: y, color: color, timestamp: timestamp);
 
       case 'weighted_point':
-        if (cleanedParts.length != 5) {
-          print('Ошибка: weighted_point требует 5 параметров');
-          return null;
+        if (cleanedParts.length < startIndex + 4) {
+          throw ParseException(
+            'WeightedPoint требует 4 параметра в строке: $line',
+          );
         }
-        final weight = double.tryParse(cleanedParts[4]);
-        final color = cleanedParts[3].toLowerCase();
-        if (weight == null) {
-          print('Ошибка: некорректный вес в строке: $line');
-          return null;
+        final weightStr = cleanedParts[startIndex + 3];
+        if (!Validator.isValidWeight(weightStr)) {
+          throw ParseException('Некорректный вес в строке: $line');
         }
-        if (!validColors.contains(color)) {
-          print('Ошибка: некорректный цвет "$color" в строке: $line');
-          return null;
-        }
+        final weight = double.parse(weightStr);
         return WeightedPoint(x: x, y: y, color: color, weight: weight);
 
       default:
-        print('Ошибка: неизвестный тип точки "$type" в строке: $line');
-        return null;
+        throw ParseException(
+          'Неизвестный тип точки "$type" в строке: $line',
+        );
     }
   }
 
   List<ColoredPoint> parsePointsFromString(String inputData) {
     final lines = inputData.split('\n');
-    return lines
-        .where((line) => line.trim().isNotEmpty)
-        .map(parsePointFromString)
-        .whereType<ColoredPoint>()
-        .toList();
+    final results = <ColoredPoint>[];
+    for (final line in lines) {
+      if (line.trim().isEmpty) continue;
+      try {
+        final point = parsePointFromString(line);
+        if (point != null) results.add(point);
+      } catch (e) {
+        print('Пропуск строки "$line": $e');
+      }
+    }
+    return results;
   }
 }

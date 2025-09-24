@@ -7,10 +7,10 @@ class LinedPoint extends ColoredPoint {
     required super.color,
     required this.z,
   });
-  double z;
+  final double z;
 
   @override
   String toString() {
-    return 'LinedPoint(line: x:$x, y:$y, z:$z)';
+    return 'LinedPoint(line: x:$x, y:$y, z:$z, color:"$color")';
   }
 }
