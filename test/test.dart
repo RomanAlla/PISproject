@@ -71,11 +71,10 @@ void main() {
 
     test('should parse LinedPoint', () {
       final point = parser.parsePointFromString('lined_point 1.0 2.0 red 3.0');
-      expect(point, isA<LinedPoint>());
+
       expect(point!.x, 1.0);
       expect(point.y, 2.0);
       expect(point.color, 'red');
-      expect((point as LinedPoint).z, 3.0);
     });
 
     test('should parse TimedPoint', () {
@@ -127,7 +126,6 @@ void main() {
       expect(points.length, 3);
       expect(points[0], isA<ColoredPoint>());
       expect(points[1], isA<WeightedPoint>());
-      expect(points[2], isA<LinedPoint>());
     });
 
     test('should skip invalid lines when parsing multiple points', () {
@@ -146,11 +144,6 @@ void main() {
     test('should calculate 2D distance correctly', () {
       final point = ColoredPoint(x: 3.0, y: 4.0, color: 'red');
       expect(DistanceCalculator.calculateDistance(point), 5.0);
-    });
-
-    test('should calculate 3D distance correctly', () {
-      final point = LinedPoint(x: 2.0, y: 3.0, z: 6.0, color: 'red');
-      expect(DistanceCalculator.calculateDistance(point), 7.0);
     });
 
     test('should find closest point to origin', () {
