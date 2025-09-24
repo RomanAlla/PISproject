@@ -1,13 +1,9 @@
 import 'dart:math';
 
-import '../models/lined_point.dart';
 import '../models/point_model.dart';
 
 class DistanceCalculator {
   static double calculateDistance(ColoredPoint point) {
-    if (point is LinedPoint) {
-      return sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
-    }
     return sqrt(point.x * point.x + point.y * point.y);
   }
 
